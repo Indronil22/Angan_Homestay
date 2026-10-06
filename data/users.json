@@ -5,5 +5,19 @@
     "email": "admin@angan.com",
     "password": "$2a$12$8BNRMklqpPRhB088n0YU1.MgmfsyzbMykTp57mNAZYjwaZ9r5TcCy",
     "role": "admin"
+  },
+  {
+    "id": "1791314402706",
+    "name": "Test Host",
+    "email": "host@test.com",
+    "password": "$2a$12$bm4PmKAj9HlPHOh511OOXeI4BIUqSml.1v465FlP/nBq2k4vO6dHG",
+    "role": "host"
+  },
+  {
+    "id": "1791314955106",
+    "name": "Indronil Dey",
+    "email": "idjob22@gmail.com",
+    "password": "$2a$12$LP1inNHMc/nGg8g1r74wfOjeX/Mza1wO08fz.Duh6c1m0xNksCpLy",
+    "role": "host"
   }
 ]

@@ -3,37 +3,78 @@
 
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     <title>Host Dashboard — Angan</title>
+
     <link rel="stylesheet" href="/css/style.css">
 </head>
 
 <body>
+
     <header class="navbar">
 
-  <a href="/" class="logo">
-    angan<span>.</span>
-  </a>
+        <a href="/" class="logo">
+            angan<span>.</span>
+        </a>
 
-  <nav class="navbar-links">
+        <nav class="navbar-links">
+
     <a href="/">Explore</a>
+
     <a href="/#about">About</a>
+
     <a href="/#how-it-works">How it works</a>
-    <a href="/host.html">Become a Host</a>
-    <a href="/login.html" class="nav-login">Login</a>
-  </nav>
 
-  <button class="menu-btn" id="menuBtn">☰</button>
+    <a href="/register.html">Become a Host</a>
 
-</header>
+    <a href="/host-dashboard.html">Host Dashboard</a>
+
+    <a href="#" id="logoutBtn" class="nav-login">Logout</a>
+
+</nav>
+
+        <button class="menu-btn" id="menuBtn">☰</button>
+
+    </header>
+
+
     <main class="section">
+
         <p class="eyebrow">HOST DASHBOARD</p>
-        <h1 id="welcome"></h1>
-        <div id="properties" class="grid"></div>
-        <h2>Requests</h2>
-        <div id="requests"></div>
+
+        <h1>Welcome, <span id="hostName">Host</span></h1>
+
+        <p>
+            Manage your properties and track their approval status.
+        </p>
+
+
+        <div class="dashboard-header">
+
+            <div>
+                <h2>Your Properties</h2>
+            </div>
+
+            <a href="/host.html" class="btn">
+                + Add Property
+            </a>
+
+        </div>
+
+
+        <div id="propertiesGrid" class="dashboard-grid">
+
+            <p>Loading your properties...</p>
+
+        </div>
+
     </main>
+
+
+    <script src="/js/app.js"></script>
     <script src="/js/host-dashboard.js"></script>
+
 </body>
 
 </html>

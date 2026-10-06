@@ -1,14 +1,134 @@
-(async function(){
- const me=await fetch("/api/me").then(r=>r.json());
- if(!me.user || me.user.role!=="host"){location.href="/login.html";return;}
- document.getElementById("welcome").textContent="Welcome, "+me.user.name;
- const ps=await fetch("/api/host/properties").then(r=>r.json());
- document.getElementById("properties").innerHTML=ps.length?ps.map(p=>`<div class="card"><img src="${p.photos[0]||""}"><div class="card-body"><span class="status ${p.status}">${p.status}</span><h3>${p.propertyName}</h3><p>${p.location}</p></div></div>`).join(""):"<p>No properties yet.</p>";
- renderRequests();
- async function renderRequests(){
-  const rs=await fetch("/api/host/requests").then(r=>r.json());
-  document.getElementById("requests").innerHTML=rs.length?rs.map(r=>`<div class="admin-item"><strong>${r.type.toUpperCase()}</strong> — ${r.propertyName}<p>Traveler: ${r.travelerName} (${r.travelerEmail})</p><p>Status: ${r.status}</p>${r.status==="pending"?`<div class="actions"><button class="btn" onclick="setStatus('${r.id}','accepted')">Accept</button><button class="btn danger" onclick="setStatus('${r.id}','declined')">Decline</button></div>`:""}</div>`).join(""):"<p>No requests yet.</p>";
- }
- window.setStatus=async(id,status)=>{await fetch("/api/host/requests/"+id,{method:"PATCH",headers:{"Content-Type":"application/json"},body:JSON.stringify({status})});renderRequests();};
+(async function () {
+
+    const propertiesGrid = document.getElementById("propertiesGrid");
+    const hostName = document.getElementById("hostName");
+    const logoutBtn = document.getElementById("logoutBtn");
+
+    try {
+
+        // Check logged-in host
+        const meResponse = await fetch("/api/me");
+        const me = await meResponse.json();
+
+        if (!me.user || me.user.role !== "host") {
+            window.location.href = "/login.html";
+            return;
+        }
+
+        hostName.textContent = me.user.name || "Host";
+
+
+        // Load host properties
+        const response = await fetch("/api/host/properties");
+
+        if (!response.ok) {
+            throw new Error("Could not load properties");
+        }
+
+        const properties = await response.json();
+
+        if (!properties.length) {
+
+            propertiesGrid.innerHTML = `
+                <div class="empty-state">
+
+                    <h3>No properties yet</h3>
+
+                    <p>
+                        You haven't submitted any property yet.
+                    </p>
+
+                    <a href="/host.html" class="btn">
+                        Add your first property
+                    </a>
+
+                </div>
+            `;
+
+            return;
+        }
+
+
+        propertiesGrid.innerHTML = "";
+
+        properties.forEach(property => {
+
+            const statusClass =
+                property.status === "approved"
+                    ? "status-approved"
+                    : property.status === "rejected"
+                        ? "status-rejected"
+                        : "status-pending";
+
+
+            propertiesGrid.innerHTML += `
+
+                <article class="dashboard-card">
+
+                    <div class="dashboard-image">
+
+                        <img
+                            src="${property.images?.[0] || "/images/hero-1.jpg"}"
+                            alt="${property.propertyName}"
+                        >
+
+                    </div>
+
+
+                    <div class="dashboard-content">
+
+                        <h3>
+                            ${property.propertyName}
+                        </h3>
+
+                        <p>
+                            ${property.location}
+                        </p>
+
+                        <p>
+                            ₹${property.price} / night
+                        </p>
+
+                        <span class="property-status ${statusClass}">
+                            ${property.status}
+                        </span>
+
+                    </div>
+
+                </article>
+
+            `;
+
+        });
+
+    } catch (error) {
+
+        console.error("Host dashboard error:", error);
+
+        propertiesGrid.innerHTML = `
+            <p>
+                Unable to load your properties right now.
+            </p>
+        `;
+
+    }
+
+
+    // Logout
+    if (logoutBtn) {
+
+        logoutBtn.addEventListener("click", async function (e) {
+
+            e.preventDefault();
+
+            await fetch("/api/logout", {
+                method: "POST"
+            });
+
+            window.location.href = "/login.html";
+
+        });
+
+    }
+
 })();
-async function logout(){await fetch("/api/logout",{method:"POST"});location.href="/";}

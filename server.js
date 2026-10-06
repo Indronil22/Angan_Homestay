@@ -141,6 +141,15 @@ app.get("/api/me", (req, res) => {
   res.json({ user: req.session.user || null });
 });
 
+app.get("/api/host/properties", auth, role("host"), (req, res) => {
+
+  const hostProperties = properties.filter(
+    property => String(property.hostId) === String(req.session.user.id)
+  );
+
+  res.json(hostProperties);
+
+});
 // ---------- PUBLIC PROPERTIES ----------
 app.get("/api/properties", (req, res) => {
   res.json(properties.filter(p => p.status === "approved"));
@@ -178,7 +187,7 @@ app.post("/api/properties", auth, role("host"), upload.fields([
     phone: phone || "",
     whatsapp: whatsapp || phone || "",
     instagram: instagram || "",
-    photos,
+    images: photos,
     video,
     status: "pending",
     createdAt: new Date().toISOString()
@@ -214,7 +223,9 @@ app.patch("/api/host/requests/:id", auth, role("host"), (req, res) => {
 // ---------- TRAVELER ----------
 app.post("/api/requests", auth, role("traveler"), (req, res) => {
   const { propertyId, type, checkIn, checkOut, guests, preferredDate, preferredTime, message } = req.body;
-  const property = properties.find(p => p.id === propertyId && p.status === "approved");
+  const property = properties.find(
+    p => String(p.id) === String(propertyId)
+);
 
   if (!property) return res.status(404).json({ error: "Property not found." });
   if (!["booking", "tour", "inquiry"].includes(type)) {
@@ -255,17 +266,53 @@ app.get("/api/admin/properties", auth, role("admin"), (req, res) => {
 });
 
 app.patch("/api/admin/properties/:id", auth, role("admin"), (req, res) => {
-  const property = properties.find(p => p.id === req.params.id);
-  if (!property) return res.status(404).json({ error: "Property not found." });
+  const property = properties.find(
+    p => String(p.id) === String(req.params.id)
+  );
+
+  if (!property) {
+    return res.status(404).json({
+      error: "Property not found."
+    });
+  }
 
   if (!["approved", "rejected", "pending"].includes(req.body.status)) {
-    return res.status(400).json({ error: "Invalid status." });
+    return res.status(400).json({
+      error: "Invalid status."
+    });
   }
 
   property.status = req.body.status;
   property.reviewedAt = new Date().toISOString();
+
   writeJson(propertiesFile, properties);
-  res.json({ property });
+
+  res.json({
+    property
+  });
+});
+
+app.delete("/api/admin/properties/:id", auth, role("admin"), (req, res) => {
+  const index = properties.findIndex(
+    p => String(p.id) === String(req.params.id)
+  );
+
+  if (index === -1) {
+    return res.status(404).json({
+      error: "Property not found."
+    });
+  }
+
+  const deletedProperty = properties[index];
+
+  properties.splice(index, 1);
+
+  writeJson(propertiesFile, properties);
+
+  res.json({
+    message: "Property deleted successfully.",
+    property: deletedProperty
+  });
 });
 
 app.get("/api/admin/requests", auth, role("admin"), (req, res) => {

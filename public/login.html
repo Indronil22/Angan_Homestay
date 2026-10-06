@@ -19,7 +19,7 @@
     <a href="/">Explore</a>
     <a href="/#about">About</a>
     <a href="/#how-it-works">How it works</a>
-    <a href="/host.html">Become a Host</a>
+    <a href="/register.html">Become a Host</a>
     <a href="/login.html" class="nav-login">Login</a>
   </nav>
 
@@ -32,7 +32,29 @@
             <h1>Login</h1>
             <form id="loginForm">
                 <label>Email<input id="email" type="email" required></label>
-                <label>Password<input id="password" type="password" required></label>
+                <label>
+    Password
+
+    <div class="password-field">
+        <input
+            id="password"
+            type="password"
+            required
+        >
+
+        <button
+            type="button"
+            class="password-toggle"
+            onclick="togglePassword('password', this)"
+            aria-label="Show password"
+        >
+            <svg class="eye-icon" viewBox="0 0 24 24">
+                <path d="M2 12s3.5-6 10-6 10 6 10 6-3.5 6-10 6S2 12 2 12Z"></path>
+                <circle cx="12" cy="12" r="2.5"></circle>
+            </svg>
+        </button>
+    </div>
+</label>
                 <button class="btn" type="submit">Login</button>
                 <p id="error" class="error"></p>
             </form>

@@ -19,11 +19,32 @@ function setupLogin() {
 function setupRegister() {
   document.getElementById("registerForm").addEventListener("submit", async e => {
     e.preventDefault();
+
     const error = document.getElementById("error");
+
+    const form = e.target;
+
+    const name = form.elements["name"].value;
+    const email = form.elements["email"].value;
+    const password = form.elements["password"].value;
+    const role = form.elements["role"].value;
+
     try {
-      const data = await post("/api/register", {name:name.value,email:email.value,password:password.value,role:role.value});
-      location.href = data.user.role === "host" ? "/host-dashboard.html" : "/";
-    } catch(err) { error.textContent=err.message; }
+      const data = await post("/api/register", {
+        name,
+        email,
+        password,
+        role
+      });
+
+      location.href =
+        data.user.role === "host"
+          ? "/host-dashboard.html"
+          : "/";
+
+    } catch (err) {
+      error.textContent = err.message;
+    }
   });
 }
 function setupAdminLogin() {
@@ -38,3 +59,19 @@ function setupAdminLogin() {
   });
 }
 async function logout(){await fetch("/api/logout",{method:"POST"});location.href="/";}
+
+function togglePassword(inputId, button) {
+
+    const input = document.getElementById(inputId);
+
+    if (input.type === "password") {
+        input.type = "text";
+        button.setAttribute("aria-label", "Hide password");
+        button.classList.add("password-visible");
+    } else {
+        input.type = "password";
+        button.setAttribute("aria-label", "Show password");
+        button.classList.remove("password-visible");
+    }
+
+}

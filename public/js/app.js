@@ -114,9 +114,9 @@ if (hero) {
 //const navbarLinks = document.querySelector(".navbar-links");
 
 //if (menuBtn && navbarLinks) {
-  //menuBtn.addEventListener("click", () => {
-   // navbarLinks.classList.toggle("active");
-  //});
+//menuBtn.addEventListener("click", () => {
+// navbarLinks.classList.toggle("active");
+//});
 //}
 
 
@@ -124,22 +124,22 @@ if (hero) {
 
 (async function () {
 
-  const grid = document.getElementById("grid");
+    const grid = document.getElementById("grid");
 
-  // If this page doesn't have the property grid,
-  // don't run the property loading code.
-  if (!grid) return;
+    // If this page doesn't have the property grid,
+    // don't run the property loading code.
+    if (!grid) return;
 
-  const r = await fetch("/api/properties");
-  const properties = await r.json();
+    const r = await fetch("/api/properties");
+    const properties = await r.json();
 
-  if (!properties.length) {
-    grid.innerHTML =
-      "<p>No approved homestays yet. Be the first host to join Angan.</p>";
-    return;
-  }
+    if (!properties.length) {
+        grid.innerHTML =
+            "<p>No approved homestays yet. Be the first host to join Angan.</p>";
+        return;
+    }
 
-  grid.innerHTML = properties.map(p => `
+    grid.innerHTML = properties.map(p => `
     <a class="card" href="/property.html?id=${p.id}">
 
       <img
@@ -177,16 +177,16 @@ if (hero) {
 // ================= ESCAPE HTML =================
 
 function escapeHtml(s) {
-  return String(s).replace(
-    /[&<>"']/g,
-    m => ({
-      "&": "&amp;",
-      "<": "&lt;",
-      ">": "&gt;",
-      '"': "&quot;",
-      "'": "&#039;"
-    }[m])
-  );
+    return String(s).replace(
+        /[&<>"']/g,
+        m => ({
+            "&": "&amp;",
+            "<": "&lt;",
+            ">": "&gt;",
+            '"': "&quot;",
+            "'": "&#039;"
+        }[m])
+    );
 }
 
 const featuredGrid = document.getElementById("featuredGrid");
@@ -210,7 +210,7 @@ if (featuredGrid) {
 
             approvedProperties.forEach(property => {
 
-    featuredGrid.innerHTML += `
+                featuredGrid.innerHTML += `
         <article
             class="stay-card"
             onclick="window.location.href='/property.html?id=${property.id}'"
@@ -218,9 +218,9 @@ if (featuredGrid) {
 
             <div class="stay-image">
                 <img
-                    src="${property.image}"
-                    alt="${property.name}"
-                >
+    src="${property.images?.[0] || property.image}"
+    alt="${property.propertyName || property.name}"
+>
 
                 <span class="stay-location">
                     ${property.location}
@@ -230,7 +230,7 @@ if (featuredGrid) {
             <div class="stay-content">
 
                 <h3>
-                    ${property.name}
+                    ${property.propertyName || property.name}
                 </h3>
 
                 <p>
@@ -243,7 +243,7 @@ if (featuredGrid) {
                     </span>
 
                     <span>
-                        ★ ${property.rating}
+                        ★ ${property.rating || "New"}
                     </span>
                 </div>
 
@@ -251,7 +251,7 @@ if (featuredGrid) {
 
         </article>
     `;
-});
+            });
         })
         .catch(error => {
             console.error("Featured properties error:", error);

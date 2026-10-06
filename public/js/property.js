@@ -45,10 +45,10 @@
 
                     ${visibleImages.slice(1).map((image, index) => {
 
-                        const actualIndex = index + 1;
-                        const remaining = images.length - 5;
+            const actualIndex = index + 1;
+            const remaining = images.length - 5;
 
-                        return `
+            return `
                             <div class="gallery-small">
 
                                 <img
@@ -56,9 +56,8 @@
                                     alt="${esc(property.name)}"
                                 >
 
-                                ${
-                                    actualIndex === 4 && remaining > 0
-                                        ? `
+                                ${actualIndex === 4 && remaining > 0
+                    ? `
                                             <button
                                                 class="see-more-btn"
                                                 onclick="openGallery()"
@@ -66,13 +65,13 @@
                                                 see more
                                             </button>
                                         `
-                                        : ""
-                                }
+                    : ""
+                }
 
                             </div>
                         `;
 
-                    }).join("")}
+        }).join("")}
 
                 </div>
 
@@ -87,7 +86,9 @@
                     </p>
 
                     <h1>
-                        ${esc(property.name)}
+                        <h1>
+    ${esc(property.propertyName || property.name)}
+</h1>
                     </h1>
 
                     <h2>
@@ -100,7 +101,9 @@
                     </p>
 
                     <p>
-                        ★ ${esc(property.rating)}
+                        <p>
+    ★ ${esc(property.rating || "New")}
+</p>
                     </p>
 
                 </div>
@@ -180,94 +183,111 @@
 
 
         // Booking / tour request
-        window.openRequest = async function (type) {
-
-            const meResponse = await fetch("/api/me");
-            const me = await meResponse.json();
-
-            if (!me.user) {
-                location.href = "/login.html";
-                return;
-            }
+        window.openRequest = function (type) {
 
             document.getElementById("requestForm").innerHTML =
                 type === "booking"
                     ? `
-                        <form id="req">
+                <form id="req">
 
-                            <label>
-                                Check-in
-                                <input
-                                    name="checkIn"
-                                    type="date"
-                                    required
-                                >
-                            </label>
+                    <label>
+                        Your Name
+                        <input
+                            name="name"
+                            type="text"
+                            required
+                        >
+                    </label>
 
-                            <label>
-                                Check-out
-                                <input
-                                    name="checkOut"
-                                    type="date"
-                                    required
-                                >
-                            </label>
+                    <label>
+                        Check-in
+                        <input
+                            name="checkIn"
+                            type="date"
+                            required
+                        >
+                    </label>
 
-                            <label>
-                                Guests
-                                <input
-                                    name="guests"
-                                    type="number"
-                                    min="1"
-                                    required
-                                >
-                            </label>
+                    <label>
+                        Check-out
+                        <input
+                            name="checkOut"
+                            type="date"
+                            required
+                        >
+                    </label>
 
-                            <label>
-                                Message
-                                <textarea name="message"></textarea>
-                            </label>
+                    <label>
+                        Guests
+                        <input
+                            name="guests"
+                            type="number"
+                            min="1"
+                            required
+                        >
+                    </label>
 
-                            <button class="btn">
-                                Send booking request
-                            </button>
+                    <label>
+                        Message
+                        <textarea
+                            name="message"
+                            placeholder="Optional message"
+                        ></textarea>
+                    </label>
 
-                        </form>
-                    `
+                    <button class="btn" type="submit">
+                        Send Request
+                    </button>
+
+                </form>
+            `
                     : `
-                        <form id="req">
+                <form id="req">
 
-                            <label>
-                                Preferred date
-                                <input
-                                    name="preferredDate"
-                                    type="date"
-                                    required
-                                >
-                            </label>
+                    <label>
+                        Your Name
+                        <input
+                            name="name"
+                            type="text"
+                            required
+                        >
+                    </label>
 
-                            <label>
-                                Preferred time
-                                <input
-                                    name="preferredTime"
-                                    type="time"
-                                    required
-                                >
-                            </label>
+                    <label>
+                        Preferred Date
+                        <input
+                            name="preferredDate"
+                            type="date"
+                            required
+                        >
+                    </label>
 
-                            <label>
-                                Message
-                                <textarea name="message"></textarea>
-                            </label>
+                    <label>
+                        Preferred Time
+                        <input
+                            name="preferredTime"
+                            type="time"
+                            required
+                        >
+                    </label>
 
-                            <button class="btn">
-                                Request tour
-                            </button>
+                    <label>
+                        Message
+                        <textarea
+                            name="message"
+                            placeholder="Optional message"
+                        ></textarea>
+                    </label>
 
-                        </form>
-                    `;
+                    <button class="btn" type="submit">
+                        Send Request
+                    </button>
 
-            document.getElementById("req").onsubmit = async function (e) {
+                </form>
+            `;
+
+
+            document.getElementById("req").onsubmit = function (e) {
 
                 e.preventDefault();
 
@@ -275,30 +295,70 @@
                     new FormData(e.target)
                 );
 
-                body.propertyId = id;
-                body.type = type;
 
-                const response = await fetch(
-                    "/api/requests",
-                    {
-                        method: "POST",
-                        headers: {
-                            "Content-Type": "application/json"
-                        },
-                        body: JSON.stringify(body)
-                    }
-                );
+                let message;
 
-                const data = await response.json();
 
-                if (!response.ok) {
-                    alert(data.error || "Something went wrong");
-                    return;
+                if (type === "booking") {
+
+                    message =
+                        `Hi, I found your property "${property.propertyName || property.name}" on Angan.
+
+I'd like to request a booking.
+
+Name: ${body.name}
+Check-in: ${body.checkIn}
+Check-out: ${body.checkOut}
+Guests: ${body.guests}
+Message: ${body.message || "Looking forward to staying here."}`;
+
+
+                } else {
+
+                    message =
+                        `Hi, I found your property "${property.propertyName || property.name}" on Angan.
+
+I'd like to request a live tour.
+
+Name: ${body.name}
+Preferred date: ${body.preferredDate}
+Preferred time: ${body.preferredTime}
+Message: ${body.message || "I'd like to see the property."}`;
+
                 }
 
-                document.getElementById("requestForm").innerHTML =
-                    "<p class='success'>Request sent successfully.</p>";
+
+                const whatsapp =
+                    property.whatsapp ||
+                    property.phone;
+
+
+                if (!whatsapp) {
+
+                    alert(
+                        "This property does not have a WhatsApp number available."
+                    );
+
+                    return;
+
+                }
+
+
+                const phoneNumber =
+                    String(whatsapp).replace(/\D/g, "");
+
+
+                const whatsappUrl =
+                    `https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`;
+
+
+                window.open(
+                    whatsappUrl,
+                    "_blank"
+                );
+
             };
+
         };
 
 
