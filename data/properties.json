@@ -7,6 +7,7 @@
     "price": 2500,
     "rating": 4.8,
     "image": "/images/hero-1.jpg",
+    
     "status": "approved"
   },
   {
@@ -30,3 +31,4 @@
     "status": "approved"
   }
 ]
+
