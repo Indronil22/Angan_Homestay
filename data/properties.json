@@ -1,0 +1,32 @@
+[
+  {
+    "id": 1,
+    "name": "Mountain View Homestay",
+    "location": "Darjeeling, West Bengal",
+    "description": "A peaceful mountain stay with beautiful Himalayan views.",
+    "price": 2500,
+    "rating": 4.8,
+    "image": "/images/hero-1.jpg",
+    "status": "approved"
+  },
+  {
+    "id": 2,
+    "name": "The Himalayan Nest",
+    "location": "Gangtok, Sikkim",
+    "description": "A warm local home close to the heart of Gangtok.",
+    "price": 3000,
+    "rating": 4.9,
+    "image": "/images/hero-2.jpg",
+    "status": "approved"
+  },
+  {
+    "id": 3,
+    "name": "Valley View Retreat",
+    "location": "Kalimpong, West Bengal",
+    "description": "Slow mornings, fresh air and panoramic valley views.",
+    "price": 2200,
+    "rating": 4.7,
+    "image": "/images/hero-3.jpg",
+    "status": "approved"
+  }
+]

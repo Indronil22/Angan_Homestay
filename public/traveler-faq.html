@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Traveler FAQ — Angan</title>
+
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+
+<body>
+
+    <!-- NAVBAR -->
+
+    <div id="header"></div>
+
+
+    <!-- FAQ HERO -->
+
+    <main>
+
+        <section class="faq-hero">
+
+            <p class="eyebrow">
+                TRAVELER SUPPORT
+            </p>
+
+            <h1>
+                Frequently Asked<br>
+                Questions
+            </h1>
+
+            <p>
+                Everything you need to know about discovering
+                homestays and staying with Angan hosts.
+            </p>
+
+        </section>
+
+
+        <!-- FAQ -->
+
+        <section class="faq-section">
+
+            <div class="faq-list">
+
+
+                <div class="faq-item">
+
+                    <button class="faq-question">
+                        What is Angan?
+
+                        <span>+</span>
+                    </button>
+
+                    <div class="faq-answer">
+
+                        <p>
+                            Angan is a homestay platform that connects
+                            travelers directly with local hosts. Instead
+                            of staying in standardized hotels, Angan helps
+                            you discover real homes, meet local people
+                            and experience destinations from a more
+                            personal perspective.
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <div class="faq-item">
+
+                    <button class="faq-question">
+                        How do I find a homestay?
+
+                        <span>+</span>
+                    </button>
+
+                    <div class="faq-answer">
+
+                        <p>
+                            Explore the available homestays on Angan,
+                            choose your preferred destination and browse
+                            the properties available there. You can view
+                            property details, photos and information about
+                            the host before deciding where you would like
+                            to stay.
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <div class="faq-item">
+
+                    <button class="faq-question">
+                        Can I talk to the host before booking?
+
+                        <span>+</span>
+                    </button>
+
+                    <div class="faq-answer">
+
+                        <p>
+                            Yes. Angan is designed around connecting
+                            travelers with hosts. You can communicate
+                            with your host, ask questions about the home
+                            and understand the stay before making your
+                            final decision.
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <div class="faq-item">
+
+                    <button class="faq-question">
+                        Are Angan homestays verified?
+
+                        <span>+</span>
+                    </button>
+
+                    <div class="faq-answer">
+
+                        <p>
+                            Properties submitted by hosts may go through
+                            an approval process before being displayed
+                            publicly on Angan. We are building Angan with
+                            the goal of creating a trustworthy experience
+                            for both travelers and hosts.
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <div class="faq-item">
+
+                    <button class="faq-question">
+                        Can I request a live tour of a property?
+
+                        <span>+</span>
+                    </button>
+
+                    <div class="faq-answer">
+
+                        <p>
+                            Where available, travelers can request a live
+                            tour from the host. This allows you to see the
+                            property and ask questions before deciding
+                            whether it is the right stay for you.
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <div class="faq-item">
+
+                    <button class="faq-question">
+                        How do I make a booking?
+
+                        <span>+</span>
+                    </button>
+
+                    <div class="faq-answer">
+
+                        <p>
+                            The booking process will depend on the
+                            property and the features available on Angan.
+                            You can connect with the host and discuss
+                            availability and stay details before
+                            confirming your plans.
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <div class="faq-item">
+
+                    <button class="faq-question">
+                        What if I need to cancel my stay?
+
+                        <span>+</span>
+                    </button>
+
+                    <div class="faq-answer">
+
+                        <p>
+                            Cancellation terms may vary depending on the
+                            property and the host's cancellation policy.
+                            Always review the cancellation conditions
+                            associated with your stay before confirming
+                            your booking.
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <div class="faq-item">
+
+                    <button class="faq-question">
+                        How can I contact Angan?
+
+                        <span>+</span>
+                    </button>
+
+                    <div class="faq-answer">
+
+                        <p>
+                            If you need help with a booking, property or
+                            any other issue, you can contact the Angan
+                            support team through the Contact Us page.
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+            </div>
+
+        </section>
+
+    </main>
+
+
+    <!-- FOOTER -->
+
+    <div id="footer"></div>
+
+
+    <script src="/js/app.js"></script>
+
+
+    <!-- FAQ SCRIPT -->
+
+    <script>
+
+        const faqQuestions =
+            document.querySelectorAll(".faq-question");
+
+
+        faqQuestions.forEach(question => {
+
+            question.addEventListener("click", () => {
+
+                const item =
+                    question.parentElement;
+
+                const answer =
+                    item.querySelector(".faq-answer");
+
+                const isOpen =
+                    item.classList.contains("active");
+
+
+                document
+                    .querySelectorAll(".faq-item")
+                    .forEach(otherItem => {
+
+                        otherItem.classList.remove("active");
+
+                    });
+
+
+                if (!isOpen) {
+
+                    item.classList.add("active");
+
+                }
+
+            });
+
+        });
+
+    </script>
+
+</body>
+
+</html>

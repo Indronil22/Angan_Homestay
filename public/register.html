@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Create account — Angan</title>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+
+<body>
+    <header class="navbar">
+
+  <a href="/" class="logo">
+    angan<span>.</span>
+  </a>
+
+  <nav class="navbar-links">
+    <a href="/">Explore</a>
+    <a href="/#about">About</a>
+    <a href="/#how-it-works">How it works</a>
+    <a href="/host.html">Become a Host</a>
+    <a href="/login.html" class="nav-login">Login</a>
+  </nav>
+
+  <button class="menu-btn" id="menuBtn">☰</button>
+
+</header>
+    <main class="auth-wrap">
+        <div class="form-card">
+            <p class="eyebrow">JOIN ANGAN</p>
+            <h1>Create account</h1>
+            <form id="registerForm">
+                <label>Name<input id="name" required></label>
+                <label>Email<input id="email" type="email" required></label>
+                <label>Password<input id="password" type="password" minlength="8" required></label>
+                <label>Account type<select id="role">
+                        <option value="traveler">Traveler</option>
+                        <option value="host">Host</option>
+                    </select></label>
+                <button class="btn" type="submit">Create account</button>
+                <p id="error" class="error"></p>
+            </form>
+        </div>
+    </main>
+    <script src="/js/auth.js"></script>
+    <script>setupRegister();</script>
+</body>
+
+</html>
