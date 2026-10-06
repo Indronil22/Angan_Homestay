@@ -210,45 +210,48 @@ if (featuredGrid) {
 
             approvedProperties.forEach(property => {
 
-                featuredGrid.innerHTML += `
-                    <article class="stay-card" onclick="window.location.href='/property.html?id=${property.id}'">
+    featuredGrid.innerHTML += `
+        <article
+            class="stay-card"
+            onclick="window.location.href='/property.html?id=${property.id}'"
+        >
 
-                        <div class="stay-image">
-                            <img
-                                src="${property.image}"
-                                alt="${property.name}"
-                            >
+            <div class="stay-image">
+                <img
+                    src="${property.image}"
+                    alt="${property.name}"
+                >
 
-                            <span class="stay-location">
-                                ${property.location}
-                            </span>
-                        </div>
+                <span class="stay-location">
+                    ${property.location}
+                </span>
+            </div>
 
-                        <div class="stay-content">
+            <div class="stay-content">
 
-                            <h3>
-                                ${property.name}
-                            </h3>
+                <h3>
+                    ${property.name}
+                </h3>
 
-                            <p>
-                                ${property.description}
-                            </p>
+                <p>
+                    ${property.description}
+                </p>
 
-                            <div class="stay-bottom">
-                                <span>
-                                    ₹${property.price} / night
-                                </span>
+                <div class="stay-bottom">
+                    <span>
+                        ₹${property.price} / night
+                    </span>
 
-                                <span>
-                                    ★ ${property.rating}
-                                </span>
-                            </div>
+                    <span>
+                        ★ ${property.rating}
+                    </span>
+                </div>
 
-                        </div>
+            </div>
 
-                    </article>
-                `;
-            });
+        </article>
+    `;
+});
         })
         .catch(error => {
             console.error("Featured properties error:", error);
