@@ -91,13 +91,19 @@ function role(...roles) {
 app.post("/api/register", async (req, res) => {
   const { name, email, password, role: requestedRole } = req.body;
   const cleanEmail = String(email || "").trim().toLowerCase();
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
   if (!name || !cleanEmail || !password) {
     return res.status(400).json({ error: "Name, email and password are required." });
   }
+  if (!emailRegex.test(cleanEmail)) {
+  return res.status(400).json({ error: "Please enter a valid email address." });
+}
   if (password.length < 8) {
-    return res.status(400).json({ error: "Password must be at least 8 characters." });
-  }
+  return res.status(400).json({
+    error: "Password must be at least 8 characters."
+  });
+}
   if (!["traveler", "host"].includes(requestedRole)) {
     return res.status(400).json({ error: "Invalid account type." });
   }
@@ -129,8 +135,72 @@ app.post("/api/login", async (req, res) => {
     return res.status(401).json({ error: "Invalid email or password." });
   }
 
-  req.session.user = { id: user.id, name: user.name, email: user.email, role: user.role };
+  req.session.regenerate(err => {
+  if (err) {
+    return res.status(500).json({ error: "Unable to create a secure session." });
+  }
+
+  req.session.user = {
+    id: user.id,
+    name: user.name,
+    email: user.email,
+    role: user.role
+  };
+
   res.json({ user: req.session.user });
+});
+});
+
+app.post("/api/contact", (req, res) => {
+  const { name, email, subject, message } = req.body;
+
+  const cleanName = String(name || "").trim();
+  const cleanEmail = String(email || "").trim().toLowerCase();
+  const cleanSubject = String(subject || "").trim();
+  const cleanMessage = String(message || "").trim();
+
+  if (!cleanName || !cleanEmail || !cleanSubject || !cleanMessage) {
+    return res.status(400).json({
+      error: "Please complete all fields."
+    });
+  }
+
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+  if (!emailRegex.test(cleanEmail)) {
+    return res.status(400).json({
+      error: "Please enter a valid email address."
+    });
+  }
+
+  if (cleanName.length > 100) {
+    return res.status(400).json({
+      error: "Name is too long."
+    });
+  }
+
+  if (cleanSubject.length > 200) {
+    return res.status(400).json({
+      error: "Subject is too long."
+    });
+  }
+
+  if (cleanMessage.length > 5000) {
+    return res.status(400).json({
+      error: "Message is too long."
+    });
+  }
+
+  console.log("Contact request received:", {
+    name: cleanName,
+    email: cleanEmail,
+    subject: cleanSubject,
+    message: cleanMessage
+  });
+
+  res.json({
+    message: "Your message has been received."
+  });
 });
 
 app.post("/api/logout", (req, res) => {

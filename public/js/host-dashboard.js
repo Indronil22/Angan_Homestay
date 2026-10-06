@@ -28,30 +28,16 @@
         const properties = await response.json();
 
         if (!properties.length) {
+    propertiesGrid.innerHTML = `
+        <div class="empty-state">
+            <h3>No properties yet</h3>
+            <p>You haven't submitted any property yet.</p>
+            <a href="/host.html" class="btn">Add your first property</a>
+        </div>`;
+} else {
+    propertiesGrid.innerHTML = "";
 
-            propertiesGrid.innerHTML = `
-                <div class="empty-state">
-
-                    <h3>No properties yet</h3>
-
-                    <p>
-                        You haven't submitted any property yet.
-                    </p>
-
-                    <a href="/host.html" class="btn">
-                        Add your first property
-                    </a>
-
-                </div>
-            `;
-
-            return;
-        }
-
-
-        propertiesGrid.innerHTML = "";
-
-        properties.forEach(property => {
+    properties.forEach(property => {
 
             const statusClass =
                 property.status === "approved"
@@ -100,6 +86,7 @@
             `;
 
         });
+    }
 
     } catch (error) {
 

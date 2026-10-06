@@ -260,3 +260,44 @@ if (featuredGrid) {
                 "<p>Unable to load homestays right now.</p>";
         });
 }
+
+const contactForm = document.querySelector(".contact-form");
+
+if (contactForm) {
+    contactForm.addEventListener("submit", async function (e) {
+        e.preventDefault();
+
+        const formData = new FormData(contactForm);
+
+        const data = {
+            name: formData.get("name"),
+            email: formData.get("email"),
+            subject: formData.get("subject"),
+            message: formData.get("message")
+        };
+
+        try {
+            const response = await fetch("/api/contact", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(data)
+            });
+
+            const result = await response.json();
+
+            if (!response.ok) {
+                alert(result.error || "Unable to send your message.");
+                return;
+            }
+
+            alert("Thank you. Your message has been received.");
+            contactForm.reset();
+
+        } catch (error) {
+            console.error("Contact form error:", error);
+            alert("Unable to send your message right now.");
+        }
+    });
+}

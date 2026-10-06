@@ -19,5 +19,12 @@
     "email": "idjob22@gmail.com",
     "password": "$2a$12$LP1inNHMc/nGg8g1r74wfOjeX/Mza1wO08fz.Duh6c1m0xNksCpLy",
     "role": "host"
+  },
+  {
+    "id": "1791323172320",
+    "name": "Indronil Dey",
+    "email": "deyindronil8@gmail.com",
+    "password": "$2a$12$c6CM6l4L/CUudNFZm5UCouXh3PIChHP.xz3WXRj/HSJhmZ1/PXmeK",
+    "role": "host"
   }
 ]
