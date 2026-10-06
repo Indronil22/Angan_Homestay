@@ -89,7 +89,7 @@ function role(...roles) {
 
 // ---------- AUTH ----------
 app.post("/api/register", async (req, res) => {
-  const { name, email, password, role: requestedRole } = req.body;
+  const { name, email, password } = req.body;
   const cleanEmail = String(email || "").trim().toLowerCase();
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
@@ -104,9 +104,9 @@ app.post("/api/register", async (req, res) => {
     error: "Password must be at least 8 characters."
   });
 }
-  if (!["traveler", "host"].includes(requestedRole)) {
-    return res.status(400).json({ error: "Invalid account type." });
-  }
+  // if (!["traveler", "host"].includes(requestedRole)) {
+  //   return res.status(400).json({ error: "Invalid account type." });
+  // }
   if (users.some(u => u.email === cleanEmail)) {
     return res.status(409).json({ error: "An account with this email already exists." });
   }
@@ -116,7 +116,7 @@ app.post("/api/register", async (req, res) => {
     name: String(name).trim(),
     email: cleanEmail,
     password: await bcrypt.hash(password, 12),
-    role: requestedRole
+    role: "host"
   };
 
   users.push(user);

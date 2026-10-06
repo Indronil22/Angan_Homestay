@@ -30,21 +30,17 @@ function setupRegister() {
     const role = form.elements["role"].value;
 
     try {
-      const data = await post("/api/register", {
-        name,
-        email,
-        password,
-        role
-      });
+  const data = await post("/api/register", {
+    name,
+    email,
+    password
+  });
 
-      location.href =
-        data.user.role === "host"
-          ? "/host-dashboard.html"
-          : "/";
+  location.href = "/host-dashboard.html";
 
-    } catch (err) {
-      error.textContent = err.message;
-    }
+} catch (err) {
+  error.textContent = err.message;
+}
   });
 }
 function setupAdminLogin() {
