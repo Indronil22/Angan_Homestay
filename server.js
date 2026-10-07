@@ -8,7 +8,9 @@ const path = require("path");
 const app = express();
 const PORT = process.env.PORT || 3000;
 const DATA_DIR = path.join(__dirname, "data");
-const UPLOAD_DIR = path.join(__dirname, "uploads");
+const UPLOAD_DIR = process.env.VERCEL
+    ? path.join("/tmp", "uploads")
+    : path.join(__dirname, "uploads");
 
 fs.mkdirSync(DATA_DIR, { recursive: true });
 fs.mkdirSync(path.join(UPLOAD_DIR, "photos"), { recursive: true });
