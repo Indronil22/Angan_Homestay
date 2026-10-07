@@ -2,38 +2,34 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width,initial-scale=1">
-    <title>Admin Dashboard — HomeStay Gallery</title>
-    <link rel="stylesheet" href="/css/style.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Admin Dashboard — HomeStay Gallery</title>
+  <link rel="stylesheet" href="/css/style.css">
 </head>
 
 <body>
-    <header class="navbar">
+  <div id="header"></div>
+  <main class="section">
+    <p class="eyebrow">PRIVATE ADMIN</p>
+    <h1>Property approvals</h1>
+    <div id="adminProperties"></div>
+    
+    <h2>Blog Management</h2>
 
-  <a href="/" class="logo logo-image">
-    <img src="/images/homestay-gallery-logo.png" alt="Home Stay Gallery">
-</a>
+    <div class="admin-blog-actions">
+      <button class="btn" onclick="showBlogForm()">
+        Create New Blog
+      </button>
+    </div>
 
-  <nav class="navbar-links">
-    <a href="/">Explore</a>
-    <a href="/#about">About</a>
-    <a href="/#how-it-works">How it works</a>
-    <a href="/host.html">Become a Host</a>
-    <a href="#" class="nav-login" onclick="logout(); return false;">Logout</a>
-  </nav>
+    <div id="blogForm"></div>
 
-  <button class="menu-btn" id="menuBtn">☰</button>
-
-</header>
-    <main class="section">
-        <p class="eyebrow">PRIVATE ADMIN</p>
-        <h1>Property approvals</h1>
-        <div id="adminProperties"></div>
-        <h2>All requests</h2>
-        <div id="adminRequests"></div>
-    </main>
-    <script src="/js/admin.js"></script>
+    <div id="adminBlogs"></div>
+  </main>
+<script src="/js/app.js"></script>
+  <script src="/js/admin.js"></script>
+  <script src="/js/admin-blog.js"></script>
 </body>
 
 </html>
