@@ -9,31 +9,7 @@
 </head>
 
 <body>
-    <header class="navbar">
-
-        <a href="/" class="logo logo-image">
-    <img src="/images/homestay-gallery-logo.png" alt="Home Stay Gallery">
-</a>
-
-        <nav class="navbar-links">
-
-            <a href="/">Explore</a>
-
-            <a href="/#about">About</a>
-
-            <a href="/#how-it-works">How it works</a>
-
-            <a href="/host.html">Become a Host</a>
-
-            <a href="/host-dashboard.html">Host Dashboard</a>
-
-            <a href="/login.html" class="nav-login" id="authNavLink">Login</a>
-
-        </nav>
-
-        <button class="menu-btn" id="menuBtn">☰</button>
-
-    </header>
+    <div id="header"></div>
     <main class="section narrow">
         <p class="eyebrow">BECOME A HOST</p>
         <h1>List your property</h1>
@@ -42,55 +18,47 @@
             <label>Property name<input name="propertyName" required></label>
             <label>Location<input name="location" required></label>
             <div class="two">
-    <label>
-        Price / night
-        <input name="price" type="number" required>
-    </label>
+                <label>
+                    Price / night
+                    <input name="price" type="number" required>
+                </label>
 
-    <label>
-        Rooms
-        <input name="rooms" type="number" required>
-    </label>
-</div>
+                <label>
+                    Rooms
+                    <input name="rooms" type="number" required>
+                </label>
+            </div>
 
-<div class="offer-section">
-    <label class="offer-checkbox">
-        <input type="checkbox" id="offerEnabled" name="offerEnabled">
-        <span>This property has a special offer</span>
-    </label>
+            <div class="offer-section">
+                <label class="offer-checkbox">
+                    <input type="checkbox" id="offerEnabled" name="offerEnabled">
+                    <span>This property has a special offer</span>
+                </label>
 
-    <div class="offer-fields" id="offerFields">
-        <label>
-            Offer title
-            <input
-                name="offerTitle"
-                type="text"
-                placeholder="e.g. 20% off for October"
-            >
-        </label>
+                <div class="offer-fields" id="offerFields">
+                    <label>
+                        Offer title
+                        <input name="offerTitle" type="text" placeholder="e.g. 20% off for October">
+                    </label>
 
-        <label>
-            Offer discount
-            <input
-                name="offerValue"
-                type="text"
-                placeholder="e.g. 20% OFF"
-            >
-        </label>
+                    <label>
+                        Offer discount
+                        <input name="offerValue" type="text" placeholder="e.g. 20% OFF">
+                    </label>
 
-        <div class="two">
-            <label>
-                Offer starts
-                <input name="offerStartDate" type="date">
-            </label>
+                    <div class="two">
+                        <label>
+                            Offer starts
+                            <input name="offerStartDate" type="date">
+                        </label>
 
-            <label>
-                Offer ends
-                <input name="offerEndDate" type="date">
-            </label>
-        </div>
-    </div>
-</div>
+                        <label>
+                            Offer ends
+                            <input name="offerEndDate" type="date">
+                        </label>
+                    </div>
+                </div>
+            </div>
             <label>Description<textarea name="description" rows="6" required></textarea></label>
             <label>Phone<input name="phone" required></label>
             <label>WhatsApp<input name="whatsapp"></label>
