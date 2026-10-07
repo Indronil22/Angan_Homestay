@@ -301,3 +301,28 @@ if (contactForm) {
         }
     });
 }
+const authNavLink = document.getElementById("authNavLink");
+
+if (authNavLink) {
+    fetch("/api/me")
+        .then(response => response.json())
+        .then(data => {
+            if (data.user) {
+                authNavLink.textContent = "Logout";
+                authNavLink.href = "#";
+
+                authNavLink.addEventListener("click", async function (e) {
+                    e.preventDefault();
+
+                    await fetch("/api/logout", {
+                        method: "POST"
+                    });
+
+                    window.location.href = "/login.html";
+                });
+            }
+        })
+        .catch(error => {
+            console.error("Auth check failed:", error);
+        });
+}
