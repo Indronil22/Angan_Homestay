@@ -65,22 +65,22 @@
 
                         <div>
                             <span>Email</span>
-                            <a href="mailto:hello@angan.com">
-                                hello@angan.com
+                            <a href="mailto:homestaygalleryindia@gmail.com">
+                                homestaygalleryindia@gmail.com
                             </a>
                         </div>
 
                         <div>
                             <span>For Hosts</span>
-                            <a href="mailto:hosts@angan.com">
-                                hosts@angan.com
+                            <a href="mailto:homestaygalleryindia@gmail.com">
+                                homestaygalleryindia@gmail.com
                             </a>
                         </div>
 
                         <div>
                             <span>Support</span>
-                            <a href="mailto:support@angan.com">
-                                support@angan.com
+                            <a href="mailto:homestaygalleryindia@gmail.com">
+                                homestaygalleryindia@gmail.com
                             </a>
                         </div>
 
@@ -189,7 +189,43 @@
     <div id="footer"></div>
 
 
-    <script src="/js/app.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@5/dist/email.min.js"></script>
+
+<script>
+    emailjs.init({
+        publicKey: "3xT46p5YjuxcTL11b"
+    });
+
+    document.querySelector(".contact-form").addEventListener("submit", function (event) {
+        event.preventDefault();
+
+        const form = this;
+        const button = form.querySelector(".contact-submit");
+
+        button.disabled = true;
+        button.textContent = "Sending...";
+
+        emailjs.sendForm(
+            "service_l5bw0da",
+            "template_cquguu2",
+            form
+        )
+        .then(function () {
+            alert("Your message has been sent successfully!");
+            form.reset();
+        })
+        .catch(function (error) {
+            console.error("EmailJS Error:", error);
+            alert("Sorry, something went wrong. Please try again.");
+        })
+        .finally(function () {
+            button.disabled = false;
+            button.textContent = "Send Message";
+        });
+    });
+</script>
+
+<script src="/js/app.js"></script>
 
 </body>
 
