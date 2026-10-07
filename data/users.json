@@ -26,5 +26,12 @@
     "email": "deyindronil8@gmail.com",
     "password": "$2a$12$c6CM6l4L/CUudNFZm5UCouXh3PIChHP.xz3WXRj/HSJhmZ1/PXmeK",
     "role": "host"
+  },
+  {
+    "id": "1791383108406",
+    "name": "HSG Admin",
+    "email": "admin@hsg.com",
+    "password": "$2a$12$i.cutPTzgprO5W3lwCN1oOn1U8sLy77IFC7/sKwU3ddnGqOt2wWO6",
+    "role": "admin"
   }
 ]

@@ -32,11 +32,11 @@ let users = readJson(usersFile);
 let properties = readJson(propertiesFile);
 let requests = readJson(requestsFile);
 
-if (!users.some(u => u.email === "admin@angan.com")) {
+if (!users.some(u => u.email === "admin@hsg.com")) {
   users.push({
     id: Date.now().toString(),
-    name: "Angan Admin",
-    email: "admin@angan.com",
+    name: "HSG Admin",
+    email: "admin@hsg.com",
     password: bcrypt.hashSync("ChangeMe123!", 12),
     role: "admin"
   });
@@ -565,6 +565,6 @@ app.get("/api/admin/requests", auth, role("admin"), (req, res) => {
 });
 
 app.listen(PORT, () => {
-  console.log(`Angan running at http://localhost:${PORT}`);
-  console.log("Admin: admin@angan.com / ChangeMe123!");
+  console.log(`HSG running at http://localhost:${PORT}`);
+  console.log("Admin: admin@hsg.com / ChangeMe123!");
 });

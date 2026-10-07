@@ -135,7 +135,7 @@ if (hero) {
 
     if (!properties.length) {
         grid.innerHTML =
-            "<p>No approved homestays yet. Be the first host to join Angan.</p>";
+            "<p>No approved homestays yet. Be the first host to join HomeStay Gallery.</p>";
         return;
     }
 

@@ -4,15 +4,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
-    <title>Become a Host — Angan</title>
+    <title>Become a Host — HomeStay Gallery</title>
     <link rel="stylesheet" href="/css/style.css">
 </head>
 
 <body>
     <header class="navbar">
 
-        <a href="/" class="logo">
-            angan<span>.</span>
+        <a href="/" class="logo logo-image">
+            <img src="/images/homestay-gallery-logo.png" alt="Home Stay Gallery">
         </a>
 
         <nav class="navbar-links">
@@ -37,7 +37,7 @@
     <main class="section narrow">
         <p class="eyebrow">BECOME A HOST</p>
         <h1>List your property</h1>
-        <p>Your listing stays private until Angan approves it.</p>
+        <p>Your listing stays private until HomeStay Gallery approves it.</p>
         <form id="propertyForm" class="form-card" enctype="multipart/form-data">
             <label>Property name<input name="propertyName" required></label>
             <label>Location<input name="location" required></label>
@@ -88,15 +88,10 @@
             <label>WhatsApp<input name="whatsapp"></label>
             <label>Instagram<input name="instagram" type="url"></label>
             <label>
-    Property photos
-    <small>Up to 12 images</small>
-    <input
-        name="photos"
-        type="file"
-        accept="image/*"
-        multiple
-    >
-</label>
+                Property photos
+                <small>Up to 12 images</small>
+                <input name="photos" type="file" accept="image/*" multiple>
+            </label>
             <label>Host story video <small>Optional, 60–90 seconds</small><input name="video" type="file"
                     accept="video/*"></label>
             <button class="btn" type="submit">Submit changes for approval</button>

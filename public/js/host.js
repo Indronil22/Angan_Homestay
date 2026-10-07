@@ -9,7 +9,7 @@
    const r=await fetch("/api/properties",{method:"POST",body:fd});
    const data=await r.json();
    if(!r.ok) throw new Error(data.error);
-   message.className="success"; message.textContent="Submitted. Angan will review your property before it goes live.";
+   message.className="success"; message.textContent="Submitted. HomeStay Gallery will review your property before it goes live.";
    e.target.reset();
   }catch(err){message.className="error";message.textContent=err.message;}
  });

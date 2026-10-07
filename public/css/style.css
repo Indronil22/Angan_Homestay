@@ -2670,3 +2670,158 @@ textarea {
         grid-template-columns: 1fr;
     }
 }
+.logo-image {
+    display: flex;
+    align-items: center;
+}
+
+.logo-image img {
+    height: 82px;
+    width: auto;
+    display: block;
+    object-fit: contain;
+}
+
+/* FOOTER LAYOUT FIX */
+
+/* =========================
+   FOOTER
+   ========================= */
+
+.footer-main {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr 1fr;
+    gap: 50px;
+    padding-bottom: 60px;
+}
+
+.footer-brand,
+.footer-column {
+    min-width: 0;
+}
+
+.footer-column {
+    display: flex;
+    flex-direction: column;
+}
+
+.footer-column h4 {
+    margin: 0 0 25px;
+}
+
+.footer-column a {
+    display: block;
+    margin-bottom: 14px;
+    color: #aeb5b0;
+    text-decoration: none;
+    font-size: 14px;
+    line-height: 1.4;
+}
+
+.footer-column a:hover {
+    color: #ffffff;
+}
+
+.footer-bottom {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.social-links {
+    display: flex;
+    align-items: center;
+    gap: 24px;
+}
+
+.social-links a {
+    color: #aeb5b0;
+    text-decoration: none;
+    font-size: 14px;
+}
+
+.social-links a:hover {
+    color: #ffffff;
+}
+
+
+/* =========================
+   TABLET
+   ========================= */
+
+@media (max-width: 900px) {
+
+    .footer-main {
+        grid-template-columns: 2fr 1fr 1fr;
+        gap: 40px;
+    }
+
+}
+
+
+/* =========================
+   MOBILE
+   ========================= */
+
+@media (max-width: 600px) {
+
+    .footer-main {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        column-gap: 28px;
+        row-gap: 32px;
+        padding-bottom: 40px;
+    }
+
+    /* Brand — left column */
+    .footer-brand {
+        grid-column: 1;
+        grid-row: 1;
+    }
+
+    /* Explore — right column */
+    .footer-column:nth-child(2) {
+        grid-column: 2;
+        grid-row: 1;
+    }
+
+    /* For Hosts — left column */
+    .footer-column:nth-child(3) {
+        grid-column: 1;
+        grid-row: 2;
+    }
+
+    /* Support — right column */
+    .footer-column:nth-child(4) {
+        grid-column: 2;
+        grid-row: 2;
+    }
+
+    .footer-column h4 {
+        margin-bottom: 20px;
+    }
+
+    .footer-column a {
+        margin-bottom: 14px;
+        font-size: 14px;
+        line-height: 1.4;
+    }
+
+    .footer-bottom {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 20px;
+    }
+
+    .footer-bottom p {
+        margin: 0;
+    }
+
+    .social-links {
+        display: flex;
+        gap: 22px;
+        flex-wrap: wrap;
+    }
+
+}
