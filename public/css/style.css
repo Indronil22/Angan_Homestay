@@ -1093,7 +1093,7 @@ textarea {
 }
 
 .about-section h2 {
-    max-width: 900px;
+    max-width: 1800px;
     margin: 35px 0 35px;
 
     font-family: Georgia, serif;
@@ -1105,7 +1105,7 @@ textarea {
 }
 
 .about-intro {
-    max-width: 900px;
+    max-width: 1800px;
 
     font-size: 21px;
     line-height: 1.7;
@@ -1116,7 +1116,7 @@ textarea {
 }
 
 .about-text {
-    max-width: 900px;
+    max-width: 1800px;
 
     font-size: 17px;
     line-height: 1.8;
