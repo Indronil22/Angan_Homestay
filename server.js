@@ -9,8 +9,8 @@ const app = express();
 const PORT = process.env.PORT || 3000;
 const DATA_DIR = path.join(__dirname, "data");
 const UPLOAD_DIR = process.env.VERCEL
-    ? path.join("/tmp", "uploads")
-    : path.join(__dirname, "uploads");
+  ? path.join("/tmp", "uploads")
+  : path.join(__dirname, "uploads");
 
 fs.mkdirSync(DATA_DIR, { recursive: true });
 fs.mkdirSync(path.join(UPLOAD_DIR, "photos"), { recursive: true });
@@ -99,13 +99,13 @@ app.post("/api/register", async (req, res) => {
     return res.status(400).json({ error: "Name, email and password are required." });
   }
   if (!emailRegex.test(cleanEmail)) {
-  return res.status(400).json({ error: "Please enter a valid email address." });
-}
+    return res.status(400).json({ error: "Please enter a valid email address." });
+  }
   if (password.length < 8) {
-  return res.status(400).json({
-    error: "Password must be at least 8 characters."
-  });
-}
+    return res.status(400).json({
+      error: "Password must be at least 8 characters."
+    });
+  }
   // if (!["traveler", "host"].includes(requestedRole)) {
   //   return res.status(400).json({ error: "Invalid account type." });
   // }
@@ -138,19 +138,19 @@ app.post("/api/login", async (req, res) => {
   }
 
   req.session.regenerate(err => {
-  if (err) {
-    return res.status(500).json({ error: "Unable to create a secure session." });
-  }
+    if (err) {
+      return res.status(500).json({ error: "Unable to create a secure session." });
+    }
 
-  req.session.user = {
-    id: user.id,
-    name: user.name,
-    email: user.email,
-    role: user.role
-  };
+    req.session.user = {
+      id: user.id,
+      name: user.name,
+      email: user.email,
+      role: user.role
+    };
 
-  res.json({ user: req.session.user });
-});
+    res.json({ user: req.session.user });
+  });
 });
 
 app.post("/api/contact", (req, res) => {
@@ -238,7 +238,21 @@ app.post("/api/properties", auth, role("host"), upload.fields([
   { name: "photos", maxCount: 12 },
   { name: "video", maxCount: 1 }
 ]), (req, res) => {
-  const { propertyName, location, price, rooms, description, phone, whatsapp, instagram } = req.body;
+  const {
+    propertyName,
+    location,
+    price,
+    rooms,
+    description,
+    phone,
+    whatsapp,
+    instagram,
+    offerEnabled,
+    offerTitle,
+    offerValue,
+    offerStartDate,
+    offerEndDate
+  } = req.body;
 
   if (!propertyName || !location || !price || !rooms || !description) {
     return res.status(400).json({ error: "Please complete all required property fields." });
@@ -259,6 +273,11 @@ app.post("/api/properties", auth, role("host"), upload.fields([
     phone: phone || "",
     whatsapp: whatsapp || phone || "",
     instagram: instagram || "",
+    offerEnabled: offerEnabled === "on",
+    offerTitle: offerTitle || "",
+    offerValue: offerValue || "",
+    offerStartDate: offerStartDate || "",
+    offerEndDate: offerEndDate || "",
     images: photos,
     video,
     status: "pending",
@@ -268,6 +287,106 @@ app.post("/api/properties", auth, role("host"), upload.fields([
   properties.push(property);
   writeJson(propertiesFile, properties);
   res.json({ property });
+});
+
+app.put("/api/properties/:id", auth, role("host"), upload.fields([
+  { name: "photos", maxCount: 12 },
+  { name: "video", maxCount: 1 }
+]), (req, res) => {
+  const property = properties.find(
+    p =>
+      String(p.id) === String(req.params.id) &&
+      String(p.hostId) === String(req.session.user.id)
+  );
+
+  if (!property) {
+    return res.status(404).json({
+      error: "Property not found."
+    });
+  }
+
+  const previousVersion = {
+    propertyName: property.propertyName,
+    location: property.location,
+    price: property.price,
+    rooms: property.rooms,
+    description: property.description,
+    phone: property.phone,
+    whatsapp: property.whatsapp,
+    instagram: property.instagram,
+    offerEnabled: property.offerEnabled,
+    offerTitle: property.offerTitle,
+    offerValue: property.offerValue,
+    offerStartDate: property.offerStartDate,
+    offerEndDate: property.offerEndDate,
+    images: property.images,
+    video: property.video
+  };
+
+  const {
+    propertyName,
+    location,
+    price,
+    rooms,
+    description,
+    phone,
+    whatsapp,
+    instagram,
+    offerEnabled,
+    offerTitle,
+    offerValue,
+    offerStartDate,
+    offerEndDate
+  } = req.body;
+
+  if (!propertyName || !location || !price || !rooms || !description) {
+    return res.status(400).json({
+      error: "Please complete all required property fields."
+    });
+  }
+
+  property.propertyName = propertyName;
+  property.location = location;
+  property.price = price;
+  property.rooms = rooms;
+  property.description = description;
+  property.phone = phone || "";
+  property.whatsapp = whatsapp || phone || "";
+  property.instagram = instagram || "";
+
+  property.offerEnabled = offerEnabled === "on";
+  property.offerTitle = offerTitle || "";
+  property.offerValue = offerValue || "";
+  property.offerStartDate = offerStartDate || "";
+  property.offerEndDate = offerEndDate || "";
+
+  const newPhotos = (req.files?.photos || [])
+    .map(f => `/uploads/photos/${f.filename}`);
+
+  const newVideo = req.files?.video?.[0]
+    ? `/uploads/videos/${req.files.video[0].filename}`
+    : "";
+
+  if (newPhotos.length) {
+    property.images = newPhotos;
+  }
+
+  if (newVideo) {
+    property.video = newVideo;
+  }
+
+  property.previousVersion = previousVersion;
+  property.editPending = true;
+
+  property.status = "pending";
+  property.updatedAt = new Date().toISOString();
+
+  writeJson(propertiesFile, properties);
+
+  res.json({
+    message: "Property updated and submitted for approval.",
+    property
+  });
 });
 
 app.get("/api/host/properties", auth, role("host"), (req, res) => {
@@ -297,7 +416,7 @@ app.post("/api/requests", auth, role("traveler"), (req, res) => {
   const { propertyId, type, checkIn, checkOut, guests, preferredDate, preferredTime, message } = req.body;
   const property = properties.find(
     p => String(p.id) === String(propertyId)
-);
+  );
 
   if (!property) return res.status(404).json({ error: "Property not found." });
   if (!["booking", "tour", "inquiry"].includes(type)) {
@@ -348,13 +467,67 @@ app.patch("/api/admin/properties/:id", auth, role("admin"), (req, res) => {
     });
   }
 
-  if (!["approved", "rejected", "pending"].includes(req.body.status)) {
+  const newStatus = req.body.status;
+
+  if (!["approved", "rejected", "pending"].includes(newStatus)) {
     return res.status(400).json({
       error: "Invalid status."
     });
   }
 
-  property.status = req.body.status;
+  /*
+   * If this is an edited version and the admin rejects it,
+   * restore the previously approved version.
+   */
+  if (
+    property.editPending === true &&
+    newStatus === "rejected" &&
+    property.previousVersion
+  ) {
+    const previousVersion = property.previousVersion;
+
+    Object.assign(property, previousVersion);
+
+    property.status = "approved";
+    property.editPending = false;
+    delete property.previousVersion;
+
+    property.reviewedAt = new Date().toISOString();
+
+    writeJson(propertiesFile, properties);
+
+    return res.json({
+      property,
+      message: "Changes rejected. Previous approved version restored."
+    });
+  }
+
+  /*
+   * If an edited version is approved,
+   * keep the edited data and remove the backup.
+   */
+  if (
+    property.editPending === true &&
+    newStatus === "approved"
+  ) {
+    property.status = "approved";
+    property.editPending = false;
+    delete property.previousVersion;
+
+    property.reviewedAt = new Date().toISOString();
+
+    writeJson(propertiesFile, properties);
+
+    return res.json({
+      property,
+      message: "Property changes approved successfully."
+    });
+  }
+
+  /*
+   * Normal approval/rejection for new properties.
+   */
+  property.status = newStatus;
   property.reviewedAt = new Date().toISOString();
 
   writeJson(propertiesFile, properties);

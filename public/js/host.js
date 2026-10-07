@@ -14,3 +14,13 @@
   }catch(err){message.className="error";message.textContent=err.message;}
  });
 })();
+const offerEnabled = document.getElementById("offerEnabled");
+const offerFields = document.getElementById("offerFields");
+
+if (offerEnabled && offerFields) {
+    offerFields.style.display = "none";
+
+    offerEnabled.addEventListener("change", function () {
+        offerFields.style.display = this.checked ? "block" : "none";
+    });
+}

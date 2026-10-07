@@ -64,8 +64,67 @@
                         }
 
                         <p>
-                            ${esc(p.description)}
-                        </p>
+    ${esc(p.description)}
+</p>
+
+<div class="admin-details">
+
+    <p>
+        <strong>Rooms:</strong>
+        ${esc(p.rooms || "Not provided")}
+    </p>
+
+    <p>
+        <strong>Phone:</strong>
+        ${esc(p.phone || "Not provided")}
+    </p>
+
+    <p>
+        <strong>WhatsApp:</strong>
+        ${esc(p.whatsapp || "Not provided")}
+    </p>
+
+    <p>
+        <strong>Instagram:</strong>
+        ${p.instagram
+            ? `<a href="${esc(p.instagram)}" target="_blank">${esc(p.instagram)}</a>`
+            : "Not provided"
+        }
+    </p>
+
+    <div class="admin-offer">
+        ${
+            p.offerEnabled
+                ? `
+                    <strong>🔥 Special Offer</strong>
+
+                    <p>
+                        <strong>Offer:</strong>
+                        ${esc(p.offerTitle || "Special Offer")}
+                    </p>
+
+                    <p>
+                        <strong>Discount:</strong>
+                        ${esc(p.offerValue || "Not specified")}
+                    </p>
+
+                    <p>
+                        <strong>Valid from:</strong>
+                        ${esc(p.offerStartDate || "Not specified")}
+                    </p>
+
+                    <p>
+                        <strong>Valid until:</strong>
+                        ${esc(p.offerEndDate || "Not specified")}
+                    </p>
+                `
+                : `
+                    <strong>No special offer</strong>
+                `
+        }
+    </div>
+
+</div>
 
                         ${
     p.status === "pending"

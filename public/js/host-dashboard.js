@@ -78,6 +78,11 @@
                         <span class="property-status ${statusClass}">
                             ${property.status}
                         </span>
+                        ${property.status === "approved" ? `
+    <a href="/edit-property.html?id=${property.id}" class="edit-property-btn">
+        Edit Property
+    </a>
+` : ""}
 
                     </div>
 

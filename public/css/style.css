@@ -2453,3 +2453,220 @@ textarea {
 .password-field input::-ms-clear {
     display: none;
 }
+.featured-actions {
+    display: flex;
+    align-items: center;
+    gap: 24px;
+}
+
+.search-stays-btn {
+    border: none;
+    background: transparent;
+    color: #49644c;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    padding: 0;
+}
+
+.search-stays-btn:hover {
+    text-decoration: underline;
+    text-underline-offset: 5px;
+}
+
+.stay-search {
+    display: none;
+    margin: -20px 0 35px;
+    max-width: 500px;
+    margin-left: auto;
+}
+
+.stay-search.active {
+    display: block;
+}
+
+.stay-search input {
+    width: 100%;
+    box-sizing: border-box;
+    padding: 14px 18px;
+    border: 1px solid #d8d4cc;
+    background: #fff;
+    color: #111b17;
+    font-size: 15px;
+    outline: none;
+}
+
+.stay-search input:focus {
+    border-color: #49644c;
+}
+
+@media (max-width: 800px) {
+    .featured-actions {
+        width: 100%;
+        justify-content: space-between;
+        gap: 15px;
+    }
+
+    .stay-search {
+        margin: 0 0 30px;
+        max-width: none;
+    }
+}
+.stay-card {
+    position: relative;
+}
+
+.offer-badge {
+    position: absolute;
+    top: 15px;
+    left: 15px;
+    z-index: 5;
+    padding: 9px 13px;
+    background: #fff;
+    color: #49644c;
+    font-size: 13px;
+    font-weight: 700;
+}
+.offer-checkbox {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    cursor: pointer;
+}
+
+.offer-checkbox input[type="checkbox"] {
+    width: 18px;
+    height: 18px;
+    margin: 0;
+    flex: 0 0 auto;
+}
+
+.offer-checkbox span {
+    display: inline;
+}
+
+.admin-details {
+    margin-top: 20px;
+    padding-top: 15px;
+    border-top: 1px solid #e5e2dc;
+}
+
+.admin-details p {
+    margin: 8px 0;
+}
+
+.admin-offer {
+    margin-top: 18px;
+    padding: 16px;
+    background: #f7f4ee;
+    border-left: 4px solid #49644c;
+}
+
+.admin-offer strong {
+    color: #49644c;
+}
+
+.admin-offer p {
+    margin: 7px 0;
+}
+/* Host Dashboard Property Cards */
+
+.dashboard-card {
+    background: #ffffff;
+    border: 1px solid #e5e2dc;
+    overflow: hidden;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.dashboard-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 14px 30px rgba(0, 0, 0, 0.08);
+}
+
+.dashboard-image {
+    width: 100%;
+    height: 220px;
+    overflow: hidden;
+}
+
+.dashboard-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+.dashboard-content {
+    padding: 22px;
+}
+
+.dashboard-content h3 {
+    margin: 0 0 8px;
+    font-family: Georgia, serif;
+    font-size: 25px;
+    font-weight: 400;
+    color: #111b17;
+}
+
+.dashboard-content p {
+    margin: 7px 0;
+    color: #646963;
+    font-size: 14px;
+}
+
+.property-status {
+    display: inline-block;
+    margin-top: 10px;
+    padding: 7px 11px;
+    font-size: 12px;
+    font-weight: 600;
+    text-transform: capitalize;
+}
+
+.status-approved {
+    background: #e7f0e8;
+    color: #49644c;
+}
+
+.status-pending {
+    background: #f5edda;
+    color: #8a6a2d;
+}
+
+.status-rejected {
+    background: #f5e4e1;
+    color: #a34d43;
+}
+
+.edit-property-btn {
+    display: inline-block;
+    margin-top: 18px;
+    padding: 10px 16px;
+    background: #49644c;
+    color: #ffffff;
+    text-decoration: none;
+    font-size: 13px;
+    font-weight: 600;
+    transition: background 0.2s ease;
+}
+
+.edit-property-btn:hover {
+    background: #354b38;
+}
+#propertiesGrid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 28px;
+}
+
+@media (max-width: 900px) {
+    #propertiesGrid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}
+
+@media (max-width: 600px) {
+    #propertiesGrid {
+        grid-template-columns: 1fr;
+    }
+}

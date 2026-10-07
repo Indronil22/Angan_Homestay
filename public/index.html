@@ -51,22 +51,28 @@
 <section id="listings" class="featured-section">
 
     <div class="featured-heading">
-
-        <div>
-            <p class="eyebrow">
-                DISCOVER
-            </p>
-
-            <h2>
-                Featured Homestays
-            </h2>
-        </div>
-
-        <a href="#listings" class="view-all">
-            View all stays →
-        </a>
-
+    <div>
+        <p class="eyebrow">DISCOVER</p>
+        <h2>Featured Homestays</h2>
     </div>
+
+    <div class="featured-actions">
+        <button type="button" class="search-stays-btn" id="searchStaysBtn">
+            🔍 Search
+        </button>
+
+        <a href="#listings" class="view-all">View all stays →</a>
+    </div>
+</div>
+
+<div class="stay-search" id="staySearch">
+    <input
+        type="text"
+        id="staySearchInput"
+        placeholder="Search by homestay or location..."
+        autocomplete="off"
+    >
+</div>
 
     <div id="featuredGrid" class="featured-grid"></div>
 

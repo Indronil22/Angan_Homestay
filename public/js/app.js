@@ -202,9 +202,38 @@ if (featuredGrid) {
         })
         .then(data => {
 
+            const today = new Date();
+            const todayDate = new Date(
+                today.getFullYear(),
+                today.getMonth(),
+                today.getDate()
+            );
+
             const approvedProperties = data.filter(
                 property => property.status === "approved"
             );
+
+            const isActiveOffer = property => {
+                if (!property.offerEnabled) return false;
+
+                if (!property.offerStartDate || !property.offerEndDate) {
+                    return false;
+                }
+
+                const startDate = new Date(
+                    property.offerStartDate + "T00:00:00"
+                );
+
+                const endDate = new Date(
+                    property.offerEndDate + "T23:59:59"
+                );
+
+                return todayDate >= startDate && todayDate <= endDate;
+            };
+
+            approvedProperties.sort((a, b) => {
+                return Number(isActiveOffer(b)) - Number(isActiveOffer(a));
+            });
 
             featuredGrid.innerHTML = "";
 
@@ -215,6 +244,11 @@ if (featuredGrid) {
             class="stay-card"
             onclick="window.location.href='/property.html?id=${property.id}'"
         >
+        ${isActiveOffer(property) ? `
+    <div class="offer-badge">
+        🔥 ${property.offerValue || "Special Offer"}
+    </div>
+` : ""}
 
             <div class="stay-image">
                 <img
@@ -259,6 +293,36 @@ if (featuredGrid) {
             featuredGrid.innerHTML =
                 "<p>Unable to load homestays right now.</p>";
         });
+}
+const searchStaysBtn = document.getElementById("searchStaysBtn");
+const staySearch = document.getElementById("staySearch");
+const staySearchInput = document.getElementById("staySearchInput");
+
+if (searchStaysBtn && staySearch && staySearchInput) {
+    searchStaysBtn.addEventListener("click", function () {
+        staySearch.classList.toggle("active");
+
+        if (staySearch.classList.contains("active")) {
+            staySearchInput.focus();
+        }
+    });
+
+    staySearchInput.addEventListener("input", function () {
+        const searchTerm = this.value.trim().toLowerCase();
+
+        const cards = featuredGrid.querySelectorAll(".stay-card");
+
+        cards.forEach(card => {
+            const name = card.querySelector("h3")?.textContent.toLowerCase() || "";
+            const location = card.querySelector(".stay-location")?.textContent.toLowerCase() || "";
+
+            const matches =
+                name.includes(searchTerm) ||
+                location.includes(searchTerm);
+
+            card.style.display = matches ? "" : "none";
+        });
+    });
 }
 
 const contactForm = document.querySelector(".contact-form");
