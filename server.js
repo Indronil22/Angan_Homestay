@@ -222,6 +222,59 @@ app.get("/api/host/properties", auth, role("host"), (req, res) => {
   res.json(hostProperties);
 
 });
+
+// ----------- BLOG API -----------
+
+app.get("/api/blogs", (req, res) => {
+    try {
+        const blogs = JSON.parse(
+            fs.readFileSync(
+                path.join(__dirname, "data", "blogs.json"),
+                "utf8"
+            )
+        );
+
+        res.json(
+            blogs.filter(blog => blog.status === "published")
+        );
+
+    } catch (error) {
+        console.error("Blog fetch error:", error);
+        res.status(500).json({
+            error: "Unable to load blogs."
+        });
+    }
+});
+
+app.get("/api/blogs/:id", (req, res) => {
+    try {
+        const blogs = JSON.parse(
+            fs.readFileSync(
+                path.join(__dirname, "data", "blogs.json"),
+                "utf8"
+            )
+        );
+
+        const blog = blogs.find(
+            blog => blog.id === req.params.id &&
+                    blog.status === "published"
+        );
+
+        if (!blog) {
+            return res.status(404).json({
+                error: "Blog post not found."
+            });
+        }
+
+        res.json(blog);
+
+    } catch (error) {
+        console.error("Blog fetch error:", error);
+        res.status(500).json({
+            error: "Unable to load blog."
+        });
+    }
+});
 // ---------- PUBLIC PROPERTIES ----------
 app.get("/api/properties", (req, res) => {
   res.json(properties.filter(p => p.status === "approved"));
@@ -454,6 +507,248 @@ app.get("/api/traveler/requests", auth, role("traveler"), (req, res) => {
 // ---------- ADMIN ----------
 app.get("/api/admin/properties", auth, role("admin"), (req, res) => {
   res.json(properties);
+});
+
+// ----------- BLOG IMAGE UPLOAD -----------
+
+const blogUpload = multer({
+    storage: multer.diskStorage({
+        destination: (req, file, cb) => {
+
+            const blogDir = path.join(
+                UPLOAD_DIR,
+                "blog"
+            );
+
+            fs.mkdirSync(blogDir, {
+                recursive: true
+            });
+
+            cb(null, blogDir);
+        },
+
+        filename: (req, file, cb) => {
+
+            const extension =
+                path.extname(file.originalname);
+
+            const filename =
+                `blog-${Date.now()}${extension}`;
+
+            cb(null, filename);
+        }
+    }),
+
+    fileFilter: (req, file, cb) => {
+
+        const allowedTypes = [
+            "image/jpeg",
+            "image/png",
+            "image/webp"
+        ];
+
+        if (!allowedTypes.includes(file.mimetype)) {
+            return cb(
+                new Error(
+                    "Only JPG, PNG and WEBP images are allowed."
+                )
+            );
+        }
+
+        cb(null, true);
+    },
+
+    limits: {
+        fileSize: 5 * 1024 * 1024
+    }
+});
+
+
+app.post(
+    "/api/admin/blogs/upload-image",
+    auth,
+    role("admin"),
+    blogUpload.single("coverImage"),
+    (req, res) => {
+
+        try {
+
+            if (!req.file) {
+                return res.status(400).json({
+                    error: "No image uploaded."
+                });
+            }
+
+            res.json({
+                success: true,
+                imageUrl: `/uploads/blog/${req.file.filename}`
+            });
+
+        } catch (error) {
+
+            console.error(
+                "Blog image upload error:",
+                error
+            );
+
+            res.status(500).json({
+                error: "Unable to upload image."
+            });
+        }
+    }
+);
+
+// ----------- ADMIN BLOG API -----------
+
+app.post("/api/admin/blogs", auth, role("admin"), (req, res) => {
+    try {
+        const blogs = JSON.parse(
+            fs.readFileSync(
+                path.join(__dirname, "data", "blogs.json"),
+                "utf8"
+            )
+        );
+
+        const {
+            title,
+            summary,
+            content,
+            coverImage,
+            category,
+            status
+        } = req.body;
+
+        if (!title || !content) {
+            return res.status(400).json({
+                error: "Title and content are required."
+            });
+        }
+
+        const newBlog = {
+            id: `blog-${Date.now()}`,
+            title,
+            summary: summary || "",
+            content,
+            coverImage: coverImage || "",
+            category: category || "Travel",
+            status: status || "draft",
+            author: "HomeStay Gallery",
+            createdAt: new Date().toISOString()
+        };
+
+        blogs.push(newBlog);
+
+        fs.writeFileSync(
+            path.join(__dirname, "data", "blogs.json"),
+            JSON.stringify(blogs, null, 2)
+        );
+
+        res.status(201).json(newBlog);
+
+    } catch (error) {
+        console.error("Blog creation error:", error);
+        res.status(500).json({
+            error: "Unable to create blog."
+        });
+    }
+});
+
+
+app.get("/api/admin/blogs", auth, role("admin"), (req, res) => {
+    try {
+        const blogs = JSON.parse(
+            fs.readFileSync(
+                path.join(__dirname, "data", "blogs.json"),
+                "utf8"
+            )
+        );
+
+        res.json(blogs);
+
+    } catch (error) {
+        console.error("Admin blog fetch error:", error);
+        res.status(500).json({
+            error: "Unable to load blogs."
+        });
+    }
+});
+
+
+app.put("/api/admin/blogs/:id", auth, role("admin"), (req, res) => {
+    try {
+        const blogs = JSON.parse(
+            fs.readFileSync(
+                path.join(__dirname, "data", "blogs.json"),
+                "utf8"
+            )
+        );
+
+        const index = blogs.findIndex(
+            blog => blog.id === req.params.id
+        );
+
+        if (index === -1) {
+            return res.status(404).json({
+                error: "Blog post not found."
+            });
+        }
+
+        blogs[index] = {
+            ...blogs[index],
+            ...req.body,
+            id: blogs[index].id
+        };
+
+        fs.writeFileSync(
+            path.join(__dirname, "data", "blogs.json"),
+            JSON.stringify(blogs, null, 2)
+        );
+
+        res.json(blogs[index]);
+
+    } catch (error) {
+        console.error("Blog update error:", error);
+        res.status(500).json({
+            error: "Unable to update blog."
+        });
+    }
+});
+
+
+app.delete("/api/admin/blogs/:id", auth, role("admin"), (req, res) => {
+    try {
+        const blogs = JSON.parse(
+            fs.readFileSync(
+                path.join(__dirname, "data", "blogs.json"),
+                "utf8"
+            )
+        );
+
+        const filteredBlogs = blogs.filter(
+            blog => blog.id !== req.params.id
+        );
+
+        if (filteredBlogs.length === blogs.length) {
+            return res.status(404).json({
+                error: "Blog post not found."
+            });
+        }
+
+        fs.writeFileSync(
+            path.join(__dirname, "data", "blogs.json"),
+            JSON.stringify(filteredBlogs, null, 2)
+        );
+
+        res.json({
+            success: true
+        });
+
+    } catch (error) {
+        console.error("Blog deletion error:", error);
+        res.status(500).json({
+            error: "Unable to delete blog."
+        });
+    }
 });
 
 app.patch("/api/admin/properties/:id", auth, role("admin"), (req, res) => {
