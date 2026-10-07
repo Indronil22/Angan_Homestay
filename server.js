@@ -1,5 +1,5 @@
 const express = require("express");
-const session = require("express-session");
+const session = require("cookie-session");
 const bcrypt = require("bcryptjs");
 const multer = require("multer");
 const fs = require("fs");
@@ -47,15 +47,14 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 app.use(session({
-  secret: process.env.SESSION_SECRET || "change-this-secret-before-production",
-  resave: false,
-  saveUninitialized: false,
-  cookie: {
-    httpOnly: true,
-    sameSite: "lax",
-    secure: false,
-    maxAge: 1000 * 60 * 60 * 8
-  }
+  name: "session",
+  keys: [
+    process.env.SESSION_SECRET || "change-this-secret-before-production"
+  ],
+  httpOnly: true,
+  sameSite: "lax",
+  secure: process.env.NODE_ENV === "production",
+  maxAge: 1000 * 60 * 60 * 8
 }));
 
 app.use("/uploads", express.static(UPLOAD_DIR));
@@ -137,20 +136,14 @@ app.post("/api/login", async (req, res) => {
     return res.status(401).json({ error: "Invalid email or password." });
   }
 
-  req.session.regenerate(err => {
-    if (err) {
-      return res.status(500).json({ error: "Unable to create a secure session." });
-    }
+  req.session.user = {
+  id: user.id,
+  name: user.name,
+  email: user.email,
+  role: user.role
+};
 
-    req.session.user = {
-      id: user.id,
-      name: user.name,
-      email: user.email,
-      role: user.role
-    };
-
-    res.json({ user: req.session.user });
-  });
+res.json({ user: req.session.user });
 });
 
 app.post("/api/contact", (req, res) => {
