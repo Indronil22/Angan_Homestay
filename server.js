@@ -207,6 +207,8 @@ app.get("/api/me", (req, res) => {
     res.set("Pragma", "no-cache");
     res.set("Expires", "0");
 
+    console.log("SESSION:", req.session);
+
     res.json({
         user: req.session.user || null
     });
