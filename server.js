@@ -143,7 +143,12 @@ app.post("/api/login", async (req, res) => {
   role: user.role
 };
 
-res.json({ user: req.session.user });
+console.log("LOGIN SESSION:", req.session);
+
+res.json({
+  user: req.session.user
+});
+
 });
 
 app.post("/api/contact", (req, res) => {
