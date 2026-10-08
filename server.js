@@ -203,7 +203,13 @@ app.post("/api/logout", (req, res) => {
 });
 
 app.get("/api/me", (req, res) => {
-  res.json({ user: req.session.user || null });
+    res.set("Cache-Control", "no-store, no-cache, must-revalidate, proxy-revalidate");
+    res.set("Pragma", "no-cache");
+    res.set("Expires", "0");
+
+    res.json({
+        user: req.session.user || null
+    });
 });
 
 app.get("/api/host/properties", auth, role("host"), (req, res) => {
