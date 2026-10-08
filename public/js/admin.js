@@ -266,7 +266,7 @@ async function logout() {
         method: "POST"
     });
 
-    location.href = "/admin-login.html";
+    location.href = "/login.html";
 
 }
 
